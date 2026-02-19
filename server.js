@@ -16,13 +16,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
-app.use(express.static(path.join(__dirname)));
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/payment-images', express.static(path.join(__dirname, 'payment-images')));
-app.use('/videos', express.static(path.join(__dirname, 'videos')));
+app.use('/styles', express.static(path.join(process.cwd(), 'styles')));
+app.use('/javascript', express.static(path.join(process.cwd(), 'javascript')));
+app.use('/images', express.static(path.join(process.cwd(), 'images')));
+app.use('/payment-images', express.static(path.join(process.cwd(), 'payment-images')));
+app.use('/videos', express.static(path.join(process.cwd(), 'videos')));
+app.use('/data', (req, res) => res.status(403).send('Forbidden')); // Protect data directory
+
+// Serve HTML files from root
+const htmlFiles = ['index.html', 'menu.html', 'order.html', 'dashboard.html', 'admin.html'];
+htmlFiles.forEach(file => {
+    app.get(`/${file}`, (req, res) => {
+        res.sendFile(path.join(process.cwd(), file));
+    });
+});
 
 // ========== DATA STORAGE ==========
-const DATA_DIR = path.join(__dirname, 'data');
+const DATA_DIR = path.join(process.cwd(), 'data');
 
 if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -749,30 +759,28 @@ app.get('*', (req, res) => {
     // Remove leading slash
     filePath = filePath.substring(1);
     
-    // Check if file exists
-    const fullPath = path.join(__dirname, filePath);
+    // Check if file exists - use process.cwd() for more reliable resolution on Vercel
+    const fullPath = path.resolve(process.cwd(), filePath);
     
-    if (fs.existsSync(fullPath)) {
+    if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isFile()) {
         res.sendFile(fullPath);
+    } else if (!filePath.includes('.') || filePath.endsWith('.html')) {
+        // Only default to index.html for SPA routing or HTML files
+        res.sendFile(path.resolve(process.cwd(), 'index.html'));
     } else {
-        // Default to index.html for SPA routing
-        res.sendFile(path.join(__dirname, 'index.html'));
+        // Return 404 for missing assets instead of index.html
+        res.status(404).send('Asset not found');
     }
 });
 
+// ========== EXPORT APP FOR VERCEL ==========
+module.exports = app;
+
 // ========== START SERVER ==========
-app.listen(PORT, () => {
-    console.log(`Éclat Bistro Server running on http://localhost:${PORT}`);
-    console.log(`Customer Dashboard: http://localhost:${PORT}/dashboard.html`);
-    console.log(`API Endpoints:`);
-    console.log(`  GET  /api/menu              - Get menu items`);
-    console.log(`  GET  /api/orders            - Get all orders`);
-    console.log(`  POST /api/orders            - Create new order`);
-    console.log(`  GET  /api/reservations      - Get all reservations`);
-    console.log(`  POST /api/reservations      - Create new reservation`);
-    console.log(`  GET  /api/contacts          - Get all messages`);
-    console.log(`  POST /api/contacts          - Submit contact form`);
-    console.log(`  GET  /api/customer/dashboard - Get customer dashboard data`);
-    console.log(`  GET  /api/customer/orders   - Get customer orders`);
-    console.log(`  GET  /api/customer/reservations - Get customer reservations`);
-});
+// Only start listening if not running as a Vercel function
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Éclat Bistro Server running on http://localhost:${PORT}`);
+        console.log(`Customer Dashboard: http://localhost:${PORT}/dashboard.html`);
+    });
+}
