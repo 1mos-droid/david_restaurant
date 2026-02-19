@@ -1,0 +1,670 @@
+/* ==========================================================================
+   ÉCLAT BISTRO - ANIMATIONS
+   ========================================================================== */
+
+:root {
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Page Loader */
+.page-loader {
+    position: fixed;
+    inset: 0;
+    background: #FAFAFA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s var(--ease-out-quart), visibility 0.5s;
+}
+
+.page-loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-ring {
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgba(212, 163, 115, 0.2);
+    border-top-color: #D4A373;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loader-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.loader-subtext {
+    font-size: 0.875rem;
+    color: #8888A0;
+}
+
+/* Fade Up Animation */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s var(--ease-out-quart) forwards;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade In Animation */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.6s var(--ease-out-quart) forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Scale In Animation */
+.scale-in {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: scaleIn 0.6s var(--ease-out-quart) forwards;
+}
+
+@keyframes scaleIn {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Slide Left Animation */
+.slide-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideLeft 0.6s var(--ease-out-quart) forwards;
+}
+
+@keyframes slideLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide Right Animation */
+.slide-right {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slideRight 0.6s var(--ease-out-quart) forwards;
+}
+
+@keyframes slideRight {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==========================================================================
+   HERO ANIMATIONS
+   ========================================================================== */
+
+.hero-text > * {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: heroFadeUp 1s var(--ease-out-expo) forwards;
+}
+
+.hero-text > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-text > *:nth-child(2) { animation-delay: 0.2s; }
+.hero-text > *:nth-child(3) { animation-delay: 0.35s; }
+.hero-text > *:nth-child(4) { animation-delay: 0.5s; }
+.hero-text > *:nth-child(5) { animation-delay: 0.65s; }
+
+@keyframes heroFadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-image {
+    opacity: 0;
+    transform: scale(0.9);
+    animation: heroImageFade 1.2s var(--ease-out-expo) 0.3s forwards;
+}
+
+@keyframes heroImageFade {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.hero-image img {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.plate-ring {
+    animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   NAVIGATION ANIMATIONS
+   ========================================================================== */
+
+.navbar {
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: #D4A373;
+    transform: scaleX(0);
+    transition: transform 0.3s var(--ease-out-quart);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+/* Dropdown Animation */
+.dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s var(--ease-out-quart);
+}
+
+.nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Mobile Menu */
+.nav-menu {
+    transition: all 0.4s var(--ease-out-expo);
+}
+
+.menu-toggle .hamburger-line {
+    transition: all 0.3s ease;
+}
+
+.menu-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ==========================================================================
+   BUTTON ANIMATIONS
+   ========================================================================== */
+
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s var(--ease-out-quart);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(212, 163, 115, 0.35);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   CARD ANIMATIONS
+   ========================================================================== */
+
+.menu-item,
+.service-card,
+.stat-card,
+.dashboard-card {
+    transition: all 0.4s var(--ease-out-quart);
+}
+
+.menu-item:hover,
+.service-card:hover,
+.stat-card:hover,
+.dashboard-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Image Zoom */
+.menu-item-image img,
+.service-image img,
+.about-images img {
+    transition: transform 0.6s var(--ease-out-expo);
+}
+
+.menu-item:hover .menu-item-image img,
+.service-card:hover .service-image img,
+.about-images:hover .image-main img {
+    transform: scale(1.1);
+}
+
+/* Badge Animation */
+.menu-badge {
+    transition: all 0.3s ease;
+}
+
+.menu-item:hover .menu-badge {
+    transform: scale(1.05);
+}
+
+/* ==========================================================================
+   GALLERY ANIMATIONS
+   ========================================================================== */
+
+.grid-item {
+    overflow: hidden;
+}
+
+.grid-item img {
+    transition: transform 0.6s var(--ease-out-expo);
+}
+
+.grid-item:hover img {
+    transform: scale(1.1);
+}
+
+.image-label {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s var(--ease-out-quart);
+}
+
+.grid-item:hover .image-label {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Social Links */
+.social-link {
+    transition: all 0.3s var(--ease-out-quart);
+}
+
+.social-link:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+   FORM ANIMATIONS
+   ========================================================================== */
+
+input:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+}
+
+input,
+textarea {
+    transition: all 0.3s ease;
+}
+
+/* Success Message */
+.success-message {
+    animation: fadeUp 0.5s var(--ease-out-quart);
+}
+
+/* ==========================================================================
+   MODAL ANIMATIONS
+   ========================================================================== */
+
+.modal-overlay {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s var(--ease-out-expo);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    transform: scale(0.95) translateY(20px);
+    transition: all 0.4s var(--ease-out-expo);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+/* Success Icon Animation */
+.success-icon {
+    animation: successPop 0.5s var(--ease-out-expo);
+}
+
+@keyframes successPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   CART ANIMATIONS
+   ========================================================================== */
+
+.cart-item {
+    animation: slideIn 0.3s var(--ease-out-quart);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.cart-notification {
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.4s var(--ease-out-expo);
+}
+
+.cart-notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ==========================================================================
+   TESTIMONIAL ANIMATIONS
+   ========================================================================== */
+
+.testimonial-slide {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.5s var(--ease-out-quart);
+}
+
+.testimonial-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.testimonial-dots .dot {
+    transition: all 0.3s ease;
+}
+
+.testimonial-dots .dot.active {
+    background: #D4A373;
+    transform: scale(1.2);
+}
+
+.testimonial-prev,
+.testimonial-next {
+    transition: all 0.3s ease;
+}
+
+.testimonial-prev:hover,
+.testimonial-next:hover {
+    background: #D4A373;
+    color: white;
+    border-color: #D4A373;
+}
+
+/* ==========================================================================
+   LOYALTY CARD ANIMATIONS
+   ========================================================================== */
+
+.loyalty-card::before {
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+.progress-fill {
+    transition: width 1s var(--ease-out-quart);
+}
+
+.reward-item {
+    transition: all 0.3s ease;
+}
+
+.reward-item:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================================================
+   RESERVATION ANIMATIONS
+   ========================================================================== */
+
+.reservation-item {
+    transition: all 0.3s ease;
+}
+
+.reservation-item:hover {
+    transform: translateX(5px);
+}
+
+/* ==========================================================================
+   SCROLL REVEAL ANIMATIONS
+   ========================================================================== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s var(--ease-out-expo);
+}
+
+.reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-fast {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s var(--ease-out-quart);
+}
+
+.reveal-fast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   MICRO-INTERACTIONS
+   ========================================================================== */
+
+.action-btn:hover {
+    transform: translateY(-3px);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.category-btn {
+    transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+    transform: translateY(-2px);
+}
+
+.order-item {
+    transition: all 0.3s ease;
+}
+
+.order-item:hover {
+    transform: translateX(5px);
+}
+
+/* Quantity Buttons */
+.qty-btn {
+    transition: all 0.2s ease;
+}
+
+.qty-btn:hover {
+    background: #D4A373;
+    color: white;
+    border-color: #D4A373;
+}
+
+/* Clear Cart Button */
+.clear-cart-btn:hover {
+    text-decoration: underline;
+}
+
+/* Link Hover Effects */
+.footer-links-col li:hover {
+    color: #D4A373;
+    padding-left: 5px;
+}
+
+/* Map Link */
+.map-link {
+    transition: all 0.3s ease;
+}
+
+.map-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Service Icon Pulse on Hover */
+.service-card:hover .service-icon {
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* ==========================================================================
+   LOADING STATES
+   ========================================================================== */
+
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ==========================================================================
+   RESPONSIVE ANIMATIONS
+   ========================================================================== */
+
+@media (max-width: 992px) {
+    .hero-text > * {
+        animation-delay: 0.1s !important;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+    
+    .nav-dropdown.open .dropdown-menu {
+        max-height: 300px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

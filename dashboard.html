@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Éclat Bistro</title>
+    <meta name="description" content="Manage your orders, reservations, and profile at Éclat Bistro">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animation.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" aria-label="Éclat Bistro Home">
+                <span class="logo-icon">E</span>
+                <span class="logo-text">Éclat Bistro</span>
+            </a>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#about" class="nav-link">About Us</a>
+                <div class="nav-dropdown">
+                    <a href="menu.html" class="nav-link dropdown-toggle">Menu</a>
+                    <div class="dropdown-menu">
+                        <a href="menu.html#starters">Starters</a>
+                        <a href="menu.html#mains">Main Courses</a>
+                        <a href="menu.html#desserts">Desserts</a>
+                        <a href="menu.html#drinks">Drinks</a>
+                    </div>
+                </div>
+                <a href="index.html#gallery" class="nav-link">Gallery</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="index.html#reservation" class="nav-link">Reservations</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="order.html" class="btn btn-primary">
+                    <i class="fas fa-shopping-bag"></i> Order Now
+                </a>
+            </div>
+            
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="dashboard-container">
+            <!-- Welcome Header -->
+            <div class="dashboard-header">
+                <div class="welcome-text">
+                    <h1>Welcome back, <span id="userFirstName">Guest</span>!</h1>
+                    <p>Here's what's happening with your account today.</p>
+                </div>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <h3 id="userFullName">Guest User</h3>
+                        <span id="userTier">Bronze Member</span>
+                    </div>
+                    <div class="user-avatar" id="userAvatar">GU</div>
+                </div>
+            </div>
+            
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-icon orders">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon reservations">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-value" id="totalReservations">0</div>
+                    <div class="stat-label">Reservations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon points">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-value" id="loyaltyPoints">0</div>
+                    <div class="stat-label">Loyalty Points</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon spending">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-value" id="totalSpent">$0</div>
+                    <div class="stat-label">Total Spent</div>
+                </div>
+            </div>
+            
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column -->
+                <div class="dashboard-column">
+                    <!-- Recent Orders -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Recent Orders</h2>
+                            <a href="order.html">View All</a>
+                        </div>
+                        <div id="recentOrdersList">
+                            <div class="empty-state">
+                                <i class="fas fa-shopping-bag"></i>
+                                <h4>No orders yet</h4>
+                                <p>Place your first order to see it here!</p>
+                                <a href="order.html" class="btn btn-primary">Order Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upcoming Reservations -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Upcoming Reservations</h2>
+                            <a href="index.html#reservation">Book New</a>
+                        </div>
+                        <div id="reservationsList">
+                            <div class="empty-state">
+                                <i class="fas fa-calendar-alt"></i>
+                                <h4>No upcoming reservations</h4>
+                                <p>Book a table to see your reservations here!</p>
+                                <a href="index.html#reservation" class="btn btn-primary">Reserve a Table</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="dashboard-column">
+                    <!-- Loyalty Program -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Loyalty Rewards</h2>
+                        </div>
+                        <div class="loyalty-card">
+                            <div class="loyalty-header">
+                                <div class="loyalty-tier" id="tierBadge">
+                                    <i class="fas fa-medal"></i> Bronze Member
+                                </div>
+                                <div class="loyalty-balance">
+                                    <div class="points" id="pointsDisplay">0</div>
+                                    <div class="label">Available Points</div>
+                                </div>
+                            </div>
+                            <div class="loyalty-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                                </div>
+                                <div class="progress-text" id="progressText">Start ordering to earn points!</div>
+                            </div>
+                            <div class="loyalty-rewards">
+                                <div class="reward-item" id="reward1">
+                                    <i class="fas fa-gift"></i>
+                                    <span id="reward1Text">Free Dessert</span>
+                                </div>
+                                <div class="reward-item" id="reward2">
+                                    <i class="fas fa-percent"></i>
+                                    <span id="reward2Text">10% Off</span>
+                                </div>
+                                <div class="reward-item" id="reward3">
+                                    <i class="fas fa-calendar"></i>
+                                    <span id="reward3Text">Priority Booking</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Quick Actions</h2>
+                        </div>
+                        <div class="quick-actions">
+                            <a href="order.html" class="action-btn">
+                                <div class="action-icon order">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h4>Order Food</h4>
+                                    <span>Quick reorder</span>
+                                </div>
+                            </a>
+                            <a href="index.html#reservation" class="action-btn" id="newReservation">
+                                <div class="action-icon reserve">
+                                    <i class="fas fa-calendar-plus"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h4>New Reservation</h4>
+                                    <span>Book a table</span>
+                                </div>
+                            </a>
+                            <a href="#" class="action-btn" id="editProfile">
+                                <div class="action-icon profile">
+                                    <i class="fas fa-user-edit"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h4>Edit Profile</h4>
+                                    <span>Update details</span>
+                                </div>
+                            </a>
+                            <a href="index.html#contact" class="action-btn" id="contactSupport">
+                                <div class="action-icon support">
+                                    <i class="fas fa-headset"></i>
+                                </div>
+                                <div class="action-text">
+                                    <h4>Get Support</h4>
+                                    <span>Help center</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h2>Recent Activity</h2>
+                        </div>
+                        <div id="activityList">
+                            <div class="empty-state">
+                                <i class="fas fa-clock"></i>
+                                <p>No recent activity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-newsletter">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for exclusive offers and updates.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit" class="button-news">Subscribe</button>
+            </form>
+        </div>
+        <div class="footer-info">
+            <div class="info-box">
+                <h4>Contact Us</h4>
+                <p>123 Gourmet Avenue<br>Culinary District, NY 10001</p>
+                <p>+1 (555) 123-4567</p>
+                <p>hello@velourdining.com</p>
+            </div>
+            <div class="info-box">
+                <h4>Opening Hours</h4>
+                <p>Monday - Thursday: 11am - 10pm</p>
+                <p>Friday - Saturday: 11am - 11pm</p>
+                <p>Sunday: 10am - 9pm</p>
+            </div>
+            <div class="info-box">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-links">
+            <div class="footer-links-col">
+                <h4>About</h4>
+                <ul>
+                    <li>Our Story</li>
+                    <li>Chefs</li>
+                    <li>Careers</li>
+                    <li>Press</li>
+                </ul>
+            </div>
+            <div class="footer-links-col">
+                <h4>Dining</h4>
+                <ul>
+                    <li>Menu</li>
+                    <li>Wine List</li>
+                    <li>Private Events</li>
+                    <li>Gift Cards</li>
+                </ul>
+            </div>
+            <div class="footer-links-col">
+                <h4>Support</h4>
+                <ul>
+                    <li>FAQ</li>
+                    <li>Contact</li>
+                    <li>Reservations</li>
+                    <li>Accessibility</li>
+                </ul>
+            </div>
+            <div class="footer-links-col">
+                <h4>Payments</h4>
+                <div class="payments">
+                    <img src="./payment-images/0014294_paypal-express-payment-plugin.png" alt="PayPal" class="payments-img">
+                    <img src="./payment-images/hub_hero_M_visa_mastercard.jpg" alt="Visa/Mastercard" class="payments-img">
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="txt-bottom">&copy; 2024 Éclat Bistro. All rights reserved.</p>
+            <p class="txt-bottom">Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="javascript/main.js"></script>
+    <script>
+        // ========== DASHBOARD JAVASCRIPT ==========
+        
+        // User session management
+        const UserSession = {
+            KEY: 'eclat_user_email',
+            
+            getEmail() {
+                return localStorage.getItem(this.KEY);
+            },
+            
+            setEmail(email) {
+                localStorage.setItem(this.KEY, email);
+            },
+            
+            clearEmail() {
+                localStorage.removeItem(this.KEY);
+            },
+            
+            hasSession() {
+                return !!this.getEmail();
+            }
+        };
+        
+        // Dashboard API
+        const DashboardAPI = {
+            async getDashboardData(email) {
+                try {
+                    const url = `/api/customer/dashboard?email=${encodeURIComponent(email)}`;
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch dashboard data');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error fetching dashboard data:', error);
+                    return null;
+                }
+            }
+        };
+        
+        // Dashboard UI Controller
+        const DashboardUI = {
+            tierColors: {
+                'Bronze': { bg: '#cd7f32', icon: 'fa-medal' },
+                'Silver': { bg: '#c0c0c0', icon: 'fa-medal' },
+                'Gold': { bg: '#ffd700', icon: 'fa-crown' },
+                'Platinum': { bg: '#e5e4e2', icon: 'fa-gem' }
+            },
+            
+            tierThresholds: {
+                'Silver': 1000,
+                'Gold': 2500,
+                'Platinum': 5000
+            },
+            
+            formatDate(dateStr) {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            },
+            
+            formatTime(timeStr) {
+                // Convert 24h to 12h format
+                const [hours, minutes] = timeStr.split(':');
+                const h = parseInt(hours);
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                const h12 = h % 12 || 12;
+                return `${h12}:${minutes} ${ampm}`;
+            },
+            
+            updateUserInfo(user) {
+                document.getElementById('userFirstName').textContent = user.firstName || 'Guest';
+                document.getElementById('userFullName').textContent = `${user.firstName || 'Guest'} ${user.lastName || 'User'}`;
+                document.getElementById('userTier').textContent = `${user.membershipTier || 'Bronze'} Member`;
+                document.getElementById('userAvatar').textContent = (user.firstName || 'G').toUpperCase().substring(0, 2);
+            },
+            
+            updateStats(stats) {
+                // Animate number counting
+                this.animateValue('totalOrders', 0, stats.totalOrders || 0, 500);
+                this.animateValue('totalReservations', 0, stats.totalReservations || 0, 500);
+                this.animateValue('loyaltyPoints', 0, stats.loyaltyPoints || 0, 500);
+                this.animateCurrency('totalSpent', 0, stats.totalSpent || 0, 500);
+            },
+            
+            animateValue(elementId, start, end, duration) {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+                
+                const range = end - start;
+                const startTime = performance.now();
+                
+                const update = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const value = Math.floor(start + range * this.easeOutQuad(progress));
+                    element.textContent = value.toLocaleString();
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    }
+                };
+                
+                requestAnimationFrame(update);
+            },
+            
+            animateCurrency(elementId, start, end, duration) {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+                
+                const range = end - start;
+                const startTime = performance.now();
+                
+                const update = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const value = start + range * this.easeOutQuad(progress);
+                    element.textContent = '$' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    }
+                };
+                
+                requestAnimationFrame(update);
+            },
+            
+            easeOutQuad(t) {
+                return t * (2 - t);
+            },
+            
+            updateLoyalty(loyaltyPoints, membershipTier) {
+                const tier = membershipTier || 'Bronze';
+                const points = loyaltyPoints || 0;
+                
+                // Update tier badge
+                const tierInfo = this.tierColors[tier] || this.tierColors['Bronze'];
+                document.getElementById('tierBadge').innerHTML = `<i class="fas ${tierInfo.icon}"></i> ${tier} Member`;
+                
+                // Update points display
+                const pointsDisplay = document.getElementById('pointsDisplay');
+                if (pointsDisplay) {
+                    pointsDisplay.textContent = points.toLocaleString();
+                }
+                
+                // Calculate progress to next tier
+                let nextTier = null;
+                let threshold = 0;
+                
+                if (tier === 'Bronze') {
+                    nextTier = 'Silver';
+                    threshold = this.tierThresholds.Silver;
+                } else if (tier === 'Silver') {
+                    nextTier = 'Gold';
+                    threshold = this.tierThresholds.Gold;
+                } else if (tier === 'Gold') {
+                    nextTier = 'Platinum';
+                    threshold = this.tierThresholds.Platinum;
+                }
+                
+                // Update progress bar and text
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                
+                if (progressFill && progressText) {
+                    if (nextTier && tier !== 'Platinum') {
+                        const progress = Math.min((points / threshold) * 100, 100);
+                        progressFill.style.width = progress + '%';
+                        progressText.textContent = `${(threshold - points).toLocaleString()} points to ${nextTier}`;
+                    } else {
+                        progressFill.style.width = '100%';
+                        progressText.textContent = 'You\'ve reached the highest tier!';
+                    }
+                }
+            },
+            
+            renderOrders(orders) {
+                const container = document.getElementById('recentOrdersList');
+                if (!container) return;
+                
+                if (!orders || orders.length === 0) {
+                    return; // Keep the empty state from HTML
+                }
+                
+                const menuImages = {
+                    'Australian Wagyu Tenderloin': './images/dani-ZLqxSzvVr7I-unsplash.jpg',
+                    'Yellowfin Tuna Tartare': './images/sahal-hameed-Nq9KlQTTEbQ-unsplash.jpg',
+                    'Grand Marnier Soufflé': './images/food-935391_1280.jpg',
+                    'Burrata & Heirloom Tomatoes': './images/kobby-mendez-q54Oxq44MZs-unsplash.jpg',
+                    'Atlantic Halibut': './images/kobby-mendez-idTwDKt2j2o-unsplash.jpg',
+                    'Chocolate Lava Cake': './images/pexels-alipazani-2787341.jpg',
+                    'French Onion Soup': './images/food-935391_1280.jpg',
+                    'Beef Carpaccio': './images/dani-ZLqxSzvVr7I-unsplash.jpg'
+                };
+                
+                container.innerHTML = orders.map(order => {
+                    const firstItem = order.items && order.items[0] ? order.items[0] : { name: 'Order', price: 0 };
+                    const image = menuImages[firstItem.name] || './images/dani-ZLqxSzvVr7I-unsplash.jpg';
+                    const statusClass = order.status || 'pending';
+                    const statusText = (order.status || 'pending').charAt(0).toUpperCase() + (order.status || 'pending').slice(1);
+                    const date = order.createdAt ? this.formatDate(order.createdAt) : 'Recently';
+                    
+                    return `
+                        <div class="order-item">
+                            <img src="${image}" alt="${firstItem.name}" class="order-img">
+                            <div class="order-info">
+                                <h4>${firstItem.name}${order.items.length > 1 ? ` + ${order.items.length - 1} more` : ''}</h4>
+                                <div class="order-meta">
+                                    <span><i class="far fa-clock"></i> ${date}</span>
+                                    <span><i class="fas fa-receipt"></i> ${order.orderNumber || 'ORD-' + Date.now().toString(36).toUpperCase()}</span>
+                                </div>
+                            </div>
+                            <span class="order-status ${statusClass}">${statusText}</span>
+                        </div>
+                    `;
+                }).join('');
+            },
+            
+            renderReservations(reservations) {
+                const container = document.getElementById('reservationsList');
+                if (!container) return;
+                
+                if (!reservations || reservations.length === 0) {
+                    return; // Keep the empty state from HTML
+                }
+                
+                container.innerHTML = reservations.map(res => `
+                    <div class="reservation-item">
+                        <div class="reservation-header">
+                            <h4>Table for ${res.details.adults}${res.details.children > 0 ? ` + ${res.details.children} children` : ''}</h4>
+                            <div class="reservation-date">
+                                <div class="date">${res.details.date}</div>
+                                <div class="time">${this.formatTime(res.details.time)}</div>
+                            </div>
+                        </div>
+                        <div class="reservation-details">
+                            <span><i class="fas fa-chair"></i> ${res.details.area || 'Indoor'}</span>
+                            <span><i class="fas fa-envelope"></i> ${res.status === 'confirmed' ? 'Confirmed' : 'Pending'}</span>
+                        </div>
+                    </div>
+                `).join('');
+            },
+            
+            renderActivity(recentActivity) {
+                const container = document.getElementById('activityList');
+                if (!container) return;
+                
+                if (!recentActivity || recentActivity.length === 0) {
+                    return; // Keep the empty state from HTML
+                }
+                
+                container.innerHTML = recentActivity.map(activity => `
+                    <div class="order-item" style="padding: 14px;">
+                        <div class="order-info">
+                            <h4 style="font-size: 0.9rem;">${activity.message}</h4>
+                            <div class="order-meta">
+                                <span><i class="far fa-clock"></i> ${this.formatDate(activity.date)}</span>
+                                ${activity.points ? `<span style="color: #2A9D8F;"><i class="fas fa-plus-circle"></i> +${activity.points} pts</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        };
+        
+        // Initialize Dashboard
+        async function initDashboard() {
+            console.log('Initializing Customer Dashboard...');
+            
+            const userEmail = UserSession.getEmail();
+            console.log('User email from session:', userEmail);
+            
+            if (userEmail) {
+                // Fetch dashboard data from API
+                const data = await DashboardAPI.getDashboardData(userEmail);
+                
+                if (data) {
+                    DashboardUI.updateUserInfo(data.user);
+                    DashboardUI.updateStats(data.stats);
+                    DashboardUI.updateLoyalty(data.stats.loyaltyPoints, data.user.membershipTier);
+                    DashboardUI.renderOrders(data.orders);
+                    DashboardUI.renderReservations(data.reservations);
+                    DashboardUI.renderActivity(data.recentActivity);
+                }
+            }
+            
+            // Setup quick action handlers
+            setupQuickActions();
+        }
+        
+        function setupQuickActions() {
+            const editProfile = document.getElementById('editProfile');
+            if (editProfile) {
+                editProfile.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const email = UserSession.getEmail();
+                    if (email) {
+                        alert('Profile editing coming soon! Your email: ' + email);
+                    } else {
+                        alert('Please place an order first to create your profile.');
+                    }
+                });
+            }
+        }
+        
+        // Save user email when ordering
+        function saveUserEmail(email) {
+            UserSession.setEmail(email);
+        }
+        
+        // Expose for use by other pages
+        window.Dashboard = {
+            saveUserEmail: saveUserEmail,
+            getUserEmail: () => UserSession.getEmail()
+        };
+        
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>
