@@ -21,24 +21,8 @@ app.use('/javascript', express.static(path.join(process.cwd(), 'javascript')));
 app.use('/images', express.static(path.join(process.cwd(), 'images')));
 app.use('/payment-images', express.static(path.join(process.cwd(), 'payment-images')));
 app.use('/videos', express.static(path.join(process.cwd(), 'videos')));
-app.use('/data', (req, res) => res.status(403).send('Forbidden')); // Protect data directory
-
-// Serve HTML files from root
-const htmlFiles = ['index.html', 'menu.html', 'order.html', 'dashboard.html', 'admin.html'];
-htmlFiles.forEach(file => {
-    const route = `/${file}`;
-    const extensionlessRoute = `/${file.replace('.html', '')}`;
-    
-    app.get(route, (req, res) => {
-        res.sendFile(path.join(process.cwd(), file));
-    });
-    
-    if (extensionlessRoute !== '/') {
-        app.get(extensionlessRoute, (req, res) => {
-            res.sendFile(path.join(process.cwd(), file));
-        });
-    }
-});
+// Protect data directory
+app.use('/data', (req, res) => res.status(403).send('Forbidden'));
 
 // ========== DATA STORAGE ==========
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -614,11 +598,6 @@ app.get('/api/stats', (req, res) => {
     res.json(stats);
 });
 
-// ========== ADMIN DASHBOARD ==========
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin.html'));
-});
-
 // ========== CUSTOMER API ==========
 
 // Get customer dashboard data (orders, reservations, loyalty)
@@ -756,29 +735,50 @@ app.post('/api/customer/favorites', (req, res) => {
     });
 });
 
-// ========== SERVE FRONTEND ==========
+// ========== FRONTEND ROUTES ==========
+
+// Explicit routes for main pages
+const pages = [
+    { route: '/', file: 'index.html' },
+    { route: '/index', file: 'index.html' },
+    { route: '/menu', file: 'menu.html' },
+    { route: '/order', file: 'order.html' },
+    { route: '/dashboard', file: 'dashboard.html' },
+    { route: '/admin', file: 'admin.html' }
+];
+
+pages.forEach(page => {
+    app.get(page.route, (req, res) => {
+        res.sendFile(path.join(process.cwd(), page.file));
+    });
+    // Also support .html extension explicitly
+    if (page.route !== '/') {
+        app.get(`${page.route}.html`, (req, res) => {
+            res.sendFile(path.join(process.cwd(), page.file));
+        });
+    }
+});
+
+// ========== SERVE FRONTEND (CATCH-ALL) ==========
 app.get('*', (req, res) => {
-    let filePath = req.path;
+    const filePath = req.path;
     
-    // Default to index.html for root
-    if (filePath === '/') {
-        filePath = '/index.html';
+    // Check if it's an API route that didn't match anything
+    if (filePath.startsWith('/api/')) {
+        return res.status(404).json({ error: 'API endpoint not found' });
     }
     
-    // Remove leading slash
-    filePath = filePath.substring(1);
-    
-    // Check if file exists - use process.cwd() for more reliable resolution on Vercel
-    const fullPath = path.resolve(process.cwd(), filePath);
+    // Remove leading slash for file lookup
+    const relativePath = filePath.startsWith('/') ? filePath.substring(1) : filePath;
+    const fullPath = path.resolve(process.cwd(), relativePath);
     
     if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isFile()) {
         res.sendFile(fullPath);
     } else if (!filePath.includes('.') || filePath.endsWith('.html')) {
-        // Only default to index.html for SPA routing or HTML files
+        // Fallback to index.html for non-file routes (SPA behavior)
         res.sendFile(path.resolve(process.cwd(), 'index.html'));
     } else {
-        // Return 404 for missing assets instead of index.html
-        res.status(404).send('Asset not found');
+        res.status(404).send('Not found');
     }
 });
 
