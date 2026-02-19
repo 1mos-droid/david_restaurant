@@ -26,9 +26,18 @@ app.use('/data', (req, res) => res.status(403).send('Forbidden')); // Protect da
 // Serve HTML files from root
 const htmlFiles = ['index.html', 'menu.html', 'order.html', 'dashboard.html', 'admin.html'];
 htmlFiles.forEach(file => {
-    app.get(`/${file}`, (req, res) => {
+    const route = `/${file}`;
+    const extensionlessRoute = `/${file.replace('.html', '')}`;
+    
+    app.get(route, (req, res) => {
         res.sendFile(path.join(process.cwd(), file));
     });
+    
+    if (extensionlessRoute !== '/') {
+        app.get(extensionlessRoute, (req, res) => {
+            res.sendFile(path.join(process.cwd(), file));
+        });
+    }
 });
 
 // ========== DATA STORAGE ==========
