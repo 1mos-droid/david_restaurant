@@ -18,6 +18,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+<<<<<<< HEAD
 // ========== STATIC FILES ==========
 app.use(express.static(path.join(__dirname, '.')));
 
@@ -30,6 +31,51 @@ const uuidv4 = () => {
         const v = c === 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
+=======
+// Serve static files
+app.use('/styles', express.static(path.join(process.cwd(), 'styles')));
+app.use('/javascript', express.static(path.join(process.cwd(), 'javascript')));
+app.use('/images', express.static(path.join(process.cwd(), 'images')));
+app.use('/payment-images', express.static(path.join(process.cwd(), 'payment-images')));
+app.use('/videos', express.static(path.join(process.cwd(), 'videos')));
+// Protect data directory
+app.use('/data', (req, res) => res.status(403).send('Forbidden'));
+
+// ========== DATA STORAGE ==========
+const DATA_DIR = path.join(process.cwd(), 'data');
+
+if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+const ordersFile = path.join(DATA_DIR, 'orders.json');
+const reservationsFile = path.join(DATA_DIR, 'reservations.json');
+const contactsFile = path.join(DATA_DIR, 'contacts.json');
+
+// Initialize data files
+const initializeDataFile = (filePath, defaultData) => {
+    if (!fs.existsSync(filePath)) {
+        fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+    }
+};
+
+initializeDataFile(ordersFile, []);
+initializeDataFile(reservationsFile, []);
+initializeDataFile(contactsFile, []);
+
+// ========== HELPER FUNCTIONS ==========
+const readData = (filePath) => {
+    try {
+        const data = fs.readFileSync(filePath, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        return [];
+    }
+};
+
+const writeData = (filePath, data) => {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+>>>>>>> 25dc8a193f4c352e696563e8651559cbab4ceac8
 };
 
 const generateOrderNumber = () => {
@@ -569,6 +615,13 @@ app.get('/api/customer/dashboard', (req, res) => {
         });
     }
     
+<<<<<<< HEAD
+=======
+    const orders = readData(ordersFile);
+    const reservations = readData(reservationsFile);
+    
+    // Filter orders by customer email
+>>>>>>> 25dc8a193f4c352e696563e8651559cbab4ceac8
     const customerOrders = orders.filter(o => 
         o.customer && o.customer.email && o.customer.email.toLowerCase() === email.toLowerCase()
     );
@@ -704,8 +757,23 @@ app.get('*', (req, res) => {
         return res.status(404).json({ error: 'API endpoint not found' });
     }
     
+<<<<<<< HEAD
     // For all other routes, serve index.html
     res.sendFile(path.join(__dirname, 'index.html'));
+=======
+    // Remove leading slash for file lookup
+    const relativePath = filePath.startsWith('/') ? filePath.substring(1) : filePath;
+    const fullPath = path.resolve(process.cwd(), relativePath);
+    
+    if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isFile()) {
+        res.sendFile(fullPath);
+    } else if (!filePath.includes('.') || filePath.endsWith('.html')) {
+        // Fallback to index.html for non-file routes (SPA behavior)
+        res.sendFile(path.resolve(process.cwd(), 'index.html'));
+    } else {
+        res.status(404).send('Not found');
+    }
+>>>>>>> 25dc8a193f4c352e696563e8651559cbab4ceac8
 });
 
 // ========== EXPORT APP FOR VERCEL ==========
@@ -717,4 +785,9 @@ if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Éclat Bistro Server running on http://localhost:${PORT}`);
     });
+<<<<<<< HEAD
 }
+=======
+}
+module.exports = app;
+>>>>>>> 25dc8a193f4c352e696563e8651559cbab4ceac8
