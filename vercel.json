@@ -7,14 +7,12 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/server.js"
-    }
+    { "src": "/styles/(.*)", "dest": "/styles/$1" },
+    { "src": "/javascript/(.*)", "dest": "/javascript/$1" },
+    { "src": "/images/(.*)", "dest": "/images/$1" },
+    { "src": "/videos/(.*)", "dest": "/videos/$1" },
+    { "src": "/payment-images/(.*)", "dest": "/payment-images/$1" },
+    { "src": "/(.*)", "dest": "/server.js" }
   ],
   "functions": {
     "server.js": {
