@@ -15,17 +15,21 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
+// Serve static files - Updated for Vercel compatibility
+app.use(express.static(process.cwd()));
 app.use('/styles', express.static(path.join(process.cwd(), 'styles')));
 app.use('/javascript', express.static(path.join(process.cwd(), 'javascript')));
 app.use('/images', express.static(path.join(process.cwd(), 'images')));
 app.use('/payment-images', express.static(path.join(process.cwd(), 'payment-images')));
 app.use('/videos', express.static(path.join(process.cwd(), 'videos')));
+
 // Protect data directory
 app.use('/data', (req, res) => res.status(403).send('Forbidden'));
 
-// ========== DATA STORAGE ==========
-const DATA_DIR = path.join(process.cwd(), 'data');
+// ========== DATA STORAGE (Vercel Fix) ==========
+// Use Vercel's /tmp directory if in production, otherwise use local ./data
+const isVercel = process.env.VERCEL === '1';
+const DATA_DIR = isVercel ? '/tmp/data' : path.join(process.cwd(), 'data');
 
 if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -37,8 +41,12 @@ const contactsFile = path.join(DATA_DIR, 'contacts.json');
 
 // Initialize data files
 const initializeDataFile = (filePath, defaultData) => {
-    if (!fs.existsSync(filePath)) {
-        fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+    try {
+        if (!fs.existsSync(filePath)) {
+            fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+        }
+    } catch (error) {
+        console.log(`Could not initialize ${filePath} - running in strict serverless mode.`);
     }
 };
 
@@ -49,15 +57,23 @@ initializeDataFile(contactsFile, []);
 // ========== HELPER FUNCTIONS ==========
 const readData = (filePath) => {
     try {
-        const data = fs.readFileSync(filePath, 'utf8');
-        return JSON.parse(data);
+        if (fs.existsSync(filePath)) {
+            const data = fs.readFileSync(filePath, 'utf8');
+            return JSON.parse(data);
+        }
+        return [];
     } catch (error) {
+        console.log(`Error reading ${filePath}, returning empty array.`);
         return [];
     }
 };
 
 const writeData = (filePath, data) => {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    } catch (error) {
+        console.log(`Failed to write to ${filePath} - Vercel read-only system active.`);
+    }
 };
 
 const generateOrderNumber = () => {
@@ -140,7 +156,6 @@ app.post('/api/orders', (req, res) => {
         orders.push(newOrder);
         writeData(ordersFile, orders);
 
-        // Log order (in production, send email notifications here)
         console.log('New order received:', newOrder.orderNumber);
 
         res.status(201).json({
@@ -235,7 +250,6 @@ app.post('/api/reservations', (req, res) => {
     try {
         const { adults, children, date, time, area, comment, contact } = req.body;
 
-        // Validation
         if (!adults || !date || !time) {
             return res.status(400).json({ error: 'Missing required reservation information' });
         }
@@ -271,7 +285,6 @@ app.post('/api/reservations', (req, res) => {
         reservations.push(newReservation);
         writeData(reservationsFile, reservations);
 
-        // Log reservation
         console.log('New reservation received:', newReservation.reservationId);
 
         res.status(201).json({
@@ -355,12 +368,10 @@ app.post('/api/contacts', (req, res) => {
     try {
         const { firstName, lastName, email, phone, message } = req.body;
 
-        // Validation
         if (!firstName || !lastName || !email || !message) {
             return res.status(400).json({ error: 'Missing required information' });
         }
 
-        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({ error: 'Invalid email address' });
@@ -605,7 +616,6 @@ app.get('/api/customer/dashboard', (req, res) => {
     const { email } = req.query;
     
     if (!email) {
-        // Return demo data for non-logged in users
         return res.json({
             user: {
                 firstName: 'Guest',
@@ -630,36 +640,29 @@ app.get('/api/customer/dashboard', (req, res) => {
     const orders = readData(ordersFile);
     const reservations = readData(reservationsFile);
     
-    // Filter orders by customer email
     const customerOrders = orders.filter(o => 
         o.customer && o.customer.email && o.customer.email.toLowerCase() === email.toLowerCase()
     );
     
-    // Filter reservations by customer email
     const customerReservations = reservations.filter(r => 
         r.contact && r.contact.email && r.contact.email.toLowerCase() === email.toLowerCase()
     );
     
-    // Calculate stats
     const totalOrders = customerOrders.length;
     const totalSpent = customerOrders.reduce((sum, o) => sum + (o.totals?.total || 0), 0);
     
-    // Get upcoming reservations (future dates)
     const today = new Date().toISOString().split('T')[0];
     const upcomingReservations = customerReservations
         .filter(r => r.details.date >= today && r.status !== 'cancelled')
         .sort((a, b) => new Date(a.details.date) - new Date(b.details.date));
     
-    // Calculate loyalty points (10 points per dollar spent)
     const loyaltyPoints = Math.floor(totalSpent * 10);
     
-    // Determine tier based on points
     let membershipTier = 'Bronze';
     if (loyaltyPoints >= 5000) membershipTier = 'Platinum';
     else if (loyaltyPoints >= 2500) membershipTier = 'Gold';
     else if (loyaltyPoints >= 1000) membershipTier = 'Silver';
     
-    // Generate avatar initials
     const firstInitial = customerOrders[0]?.customer?.firstName?.charAt(0) || 'G';
     const lastInitial = customerOrders[0]?.customer?.lastName?.charAt(0) || 'U';
     
@@ -759,29 +762,6 @@ pages.forEach(page => {
     }
 });
 
-// ========== SERVE FRONTEND (CATCH-ALL) ==========
-app.get('*', (req, res) => {
-    const filePath = req.path;
-    
-    // Check if it's an API route that didn't match anything
-    if (filePath.startsWith('/api/')) {
-        return res.status(404).json({ error: 'API endpoint not found' });
-    }
-    
-    // Remove leading slash for file lookup
-    const relativePath = filePath.startsWith('/') ? filePath.substring(1) : filePath;
-    const fullPath = path.resolve(process.cwd(), relativePath);
-    
-    if (fs.existsSync(fullPath) && fs.lstatSync(fullPath).isFile()) {
-        res.sendFile(fullPath);
-    } else if (!filePath.includes('.') || filePath.endsWith('.html')) {
-        // Fallback to index.html for non-file routes (SPA behavior)
-        res.sendFile(path.resolve(process.cwd(), 'index.html'));
-    } else {
-        res.status(404).send('Not found');
-    }
-});
-
 // ========== EXPORT APP FOR VERCEL ==========
 module.exports = app;
 
@@ -793,4 +773,3 @@ if (require.main === module) {
         console.log(`Customer Dashboard: http://localhost:${PORT}/dashboard.html`);
     });
 }
-module.exports = app;
