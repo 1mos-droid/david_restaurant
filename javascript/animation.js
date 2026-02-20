@@ -441,24 +441,35 @@ console.log('Animation system initialized');
 /* ===============================
 SCROLL REVEAL
 ================================ */
-const revealElements = document.querySelectorAll(
-    '.about-content, .about-images, .menu-item, .service-card, .section-header, .contact-form, .contact-info, .footer'
-);
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.reveal');
 
-const observer = new IntersectionObserver(
-    entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('show');
-            }
-        });
-    },
-    { threshold: 0.15 }
-);
+    if (revealElements.length === 0) return;
 
-revealElements.forEach(el => {
-    el.classList.add('reveal');
-    observer.observe(el);
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Optional: unobserve after showing
+                    // observer.unobserve(entry.target);
+                }
+            });
+        },
+        { 
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        }
+    );
+
+    revealElements.forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// Add to DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function () {
+    initScrollReveal();
 });
 
 /* ===============================

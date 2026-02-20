@@ -40,25 +40,16 @@
             
             <div class="nav-menu" id="navMenu">
                 <a href="/" class="nav-link">Home</a>
-                <div class="nav-dropdown">
-                    <a href="/menu" class="nav-link dropdown-toggle">Menu</a>
-                    <div class="dropdown-menu">
-                        <a href="/menu#starters">Starters</a>
-                        <a href="/menu#mains">Main Courses</a>
-                        <a href="/menu#desserts">Desserts</a>
-                        <a href="/menu#drinks">Drinks</a>
-                    </div>
-                </div>
+                <a href="/menu.html" class="nav-link">Menu</a>
                 <a href="/#reservation" class="nav-link">Reservations</a>
-                <a href="/#gallery" class="nav-link">Gallery</a>
-                <a href="/#about" class="nav-link">About Us</a>
+                <a href="/#about" class="nav-link">About</a>
+                <a href="/dashboard.html" class="nav-link">Dashboard</a>
                 <a href="/#contact" class="nav-link">Contact</a>
-                <a href="/dashboard" class="nav-link">Dashboard</a>
             </div>
             
             <div class="nav-actions">
-                <a href="/dashboard" class="btn btn-outline">
-                    <i class="fas fa-user"></i> My Account
+                <a href="/dashboard" class="btn btn-outline btn-sm">
+                    My Account
                 </a>
             </div>
             
@@ -71,17 +62,17 @@
     </nav>
     
     <!-- Order Section -->
-    <section class="order-section" id="order">
+    <section class="order-section" id="order" style="padding-top: 12rem;">
         <div class="container">
-            <div class="order-header">
+            <div class="order-header reveal">
                 <span class="section-label">Online Ordering</span>
-                <h1 class="section-title">Order Your Favorite</h1>
-                <p class="section-description">Browse our menu and order for delivery or pickup</p>
+                <h1 class="section-title" style="font-size: 4rem;">Order Your <br />Favorite <span class="highlight">Artistry</span></h1>
+                <p class="section-description" style="text-align: left; margin: 2rem 0;">Browse our menu and order for delivery or pickup from the comfort of your home.</p>
             </div>
             
-            <div class="order-dashboard">
+            <div class="order-dashboard" style="margin-top: 6rem;">
                 <!-- Menu Section -->
-                <div class="menu-section">
+                <div class="menu-section reveal">
                     <div class="menu-categories">
                         <button class="category-btn active" data-category="all">All</button>
                         <button class="category-btn" data-category="starters">Starters</button>
@@ -90,43 +81,41 @@
                         <button class="category-btn" data-category="drinks">Drinks</button>
                     </div>
                     
-                    <div class="menu-grid" id="menuGrid">
+                    <div class="menu-grid" id="menuGrid" style="grid-template-columns: 1fr;">
                         <!-- Menu items loaded from backend -->
                     </div>
                 </div>
                 
                 <!-- Cart Section -->
-                <div class="cart-section">
-                    <div class="cart-container">
-                        <div class="cart-header">
-                            <h2>Your Order</h2>
-                            <button class="clear-cart-btn" id="clearCartBtn">Clear All</button>
+                <div class="cart-section reveal">
+                    <div class="cart-container" style="border: 1px solid var(--color-border); padding: 3rem;">
+                        <div class="cart-header" style="background: transparent; color: var(--color-primary); padding: 0 0 2rem 0; border-bottom: 1px solid var(--color-border);">
+                            <h2 style="font-family: var(--font-heading); font-size: 2rem;">Your Order</h2>
+                            <button class="clear-cart-btn" id="clearCartBtn" style="background: transparent; border: none; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; color: var(--color-text-light);">Clear All</button>
                         </div>
                         
-                        <div class="cart-items" id="cartItems">
+                        <div class="cart-items" id="cartItems" style="padding: 2rem 0;">
                             <div class="cart-empty">
-                                <div class="cart-empty-icon">🛒</div>
-                                <p>Your cart is empty</p>
-                                <span>Add some delicious items from our menu!</span>
+                                <p style="font-style: italic;">Your cart is empty.</p>
                             </div>
                         </div>
                         
-                        <div class="cart-summary">
-                            <div class="cart-summary-row">
-                                <span>Subtotal</span>
-                                <span id="cartSubtotal">$0.00</span>
+                        <div class="cart-summary" style="background: transparent; border-top: 1px solid var(--color-border); padding: 2rem 0;">
+                            <div class="cart-summary-row" style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">Subtotal</span>
+                                <span id="cartSubtotal" style="font-weight: 500;">$0.00</span>
                             </div>
-                            <div class="cart-summary-row">
-                                <span>Tax (10%)</span>
-                                <span id="cartTax">$0.00</span>
+                            <div class="cart-summary-row" style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+                                <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;">Tax (10%)</span>
+                                <span id="cartTax" style="font-weight: 500;">$0.00</span>
                             </div>
-                            <div class="cart-total">
+                            <div class="cart-total" style="display: flex; justify-content: space-between; font-size: 1.5rem; font-family: var(--font-heading); border-top: 1px solid var(--color-border); padding-top: 2rem;">
                                 <span>Total</span>
                                 <span id="cartTotal">$0.00</span>
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-checkout" id="checkoutBtn" disabled>
-                            <i class="fas fa-credit-card"></i> Proceed to Checkout
+                        <button class="btn btn-primary btn-checkout" id="checkoutBtn" disabled style="width: 100%;">
+                            Proceed to Checkout
                         </button>
                     </div>
                 </div>
@@ -136,89 +125,91 @@
     
     <!-- Checkout Modal -->
     <div class="modal-overlay" id="checkoutModal">
-        <div class="modal-content">
+        <div class="modal-content reveal">
             <button class="modal-close" id="closeCheckoutModal">&times;</button>
-            <h2>Checkout</h2>
+            <span class="section-label">Finalize</span>
+            <h1 style="font-size: 3rem; margin-bottom: 4rem;">Checkout</h1>
             
             <form id="checkoutForm">
                 <!-- Contact Information -->
                 <div class="form-section">
                     <h3>Contact Information</h3>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>First Name *</label>
-                            <input type="text" id="checkoutFirstName" required placeholder="John">
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name *</label>
-                            <input type="text" id="checkoutLastName" required placeholder="Doe">
-                        </div>
+                        <input type="text" id="checkoutFirstName" required placeholder="FIRST NAME *">
+                        <input type="text" id="checkoutLastName" required placeholder="LAST NAME *">
                     </div>
-                    <div class="form-group">
-                        <label>Email *</label>
-                        <input type="email" id="checkoutEmail" required placeholder="john@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Phone *</label>
-                        <input type="tel" id="checkoutPhone" required placeholder="(555) 123-4567">
+                    <div class="form-row">
+                        <input type="email" id="checkoutEmail" required placeholder="EMAIL ADDRESS *">
+                        <input type="tel" id="checkoutPhone" required placeholder="PHONE NUMBER *">
                     </div>
                 </div>
                 
-                <!-- Delivery Address -->
+                <!-- Delivery Details -->
                 <div class="form-section">
-                    <h3>Delivery Address</h3>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" id="checkoutAddress" placeholder="123 Main Street">
+                    <h3>Delivery Details</h3>
+                    <div class="form-row">
+                        <input type="text" id="checkoutAddress" placeholder="ADDRESS *">
+                        <input type="text" id="checkoutCity" placeholder="CITY *">
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label>City</label>
-                            <input type="text" id="checkoutCity" placeholder="New York">
-                        </div>
-                        <div class="form-group">
-                            <label>Postal Code</label>
-                            <input type="text" id="checkoutZip" placeholder="10001">
-                        </div>
+                        <input type="text" id="checkoutZip" placeholder="POSTAL CODE *">
+                        <select id="deliveryMethod" style="padding: 1.5rem 0; border: none; border-bottom: 1px solid var(--color-border); background: transparent; letter-spacing: 0.1em; font-size: 0.8rem; text-transform: uppercase;">
+                            <option value="delivery">DELIVERY</option>
+                            <option value="pickup">PICKUP</option>
+                        </select>
                     </div>
+                </div>
+                
+                <!-- Payment Method -->
+                <div class="form-section">
+                    <h3>Payment</h3>
+                    <select id="paymentMethod" style="padding: 1.5rem 0; border: none; border-bottom: 1px solid var(--color-border); background: transparent; letter-spacing: 0.1em; font-size: 0.8rem; text-transform: uppercase; width: 100%;">
+                        <option value="card">CREDIT / DEBIT CARD</option>
+                        <option value="cash">CASH ON ARRIVAL</option>
+                    </select>
                 </div>
                 
                 <!-- Special Instructions -->
                 <div class="form-section">
-                    <h3>Special Instructions</h3>
-                    <div class="form-group">
-                        <textarea id="orderNotes" placeholder="Any special requests or dietary requirements..."></textarea>
-                    </div>
+                    <h3>Notes</h3>
+                    <textarea id="orderNotes" placeholder="SPECIAL INSTRUCTIONS OR DIETARY REQUIREMENTS"></textarea>
                 </div>
                 
                 <!-- Order Summary -->
                 <div class="order-summary-box">
                     <h3>Order Summary</h3>
-                    <div id="orderSummary">
-                        <p style="color: #999; text-align: center;">No items in cart</p>
+                    <div id="orderSummary" class="summary-items">
+                        <p style="font-style: italic; color: var(--color-text-muted);">Calculating order...</p>
+                    </div>
+                    <div class="summary-total-row">
+                        <span>Total</span>
+                        <span class="summary-total">$0.00</span>
                     </div>
                 </div>
                 
-                <button type="submit" class="submit-order-btn">Place Order</button>
+                <button type="submit" class="submit-order-btn btn btn-primary">Place Your Order</button>
             </form>
         </div>
     </div>
     
     <!-- Success Modal -->
     <div class="modal-overlay success-modal" id="successModal">
-        <div class="modal-content">
-            <div class="success-icon">
-                <i class="fas fa-check"></i>
+        <div class="modal-content reveal" style="text-align: center;">
+            <div class="success-icon" style="font-size: 4rem; color: var(--color-accent); margin-bottom: 3rem;">
+                <i class="fas fa-check-circle"></i>
             </div>
-            <h2>Order Placed!</h2>
-            <p>Thank you for your order.</p>
-            <div class="order-id">
+            <span class="section-label">Confirmation</span>
+            <h1 style="font-size: 3rem; margin-bottom: 2rem;">Order Received</h1>
+            <p style="font-family: var(--font-heading); font-style: italic; font-size: 1.2rem; margin-bottom: 4rem;">Thank you. Your culinary journey is being prepared.</p>
+            
+            <div class="order-id" style="font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--color-text-light); margin-bottom: 1rem;">
                 Order ID: <span class="success-order-id">ORD-123456</span>
             </div>
-            <div class="order-total-display" style="margin-bottom: 24px; font-size: 1.1rem;">
+            <div class="order-total-display" style="font-size: 2rem; font-family: var(--font-heading); margin-bottom: 6rem;">
                 Total: <span class="success-order-total">$0.00</span>
             </div>
-            <button class="continue-btn" id="closeSuccessModal">Continue</button>
+            
+            <button class="btn btn-outline" id="closeSuccessModal" style="width: 100%;">Return to Home</button>
         </div>
     </div>
     

@@ -357,9 +357,8 @@ function initCategoryFilter() {
 
 // ========== CHECKOUT MODAL ==========
 function initCheckoutModal() {
-    var checkoutBtn = document.querySelector(".btn-checkout");
-    var closeBtn = document.querySelector(".modal-close");
-    var overlay = document.querySelector(".modal-overlay");
+    var checkoutBtn = document.getElementById("checkoutBtn");
+    var closeBtn = document.getElementById("closeCheckoutModal");
     var modal = document.getElementById("checkoutModal");
 
     if (!checkoutBtn || !modal) return;
@@ -381,9 +380,12 @@ function initCheckoutModal() {
         closeBtn.addEventListener("click", closeModal);
     }
 
-    if (overlay) {
-        overlay.addEventListener("click", closeModal);
-    }
+    // Close when clicking background
+    modal.addEventListener("click", function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 
     document.addEventListener("keydown", function (e) {
         if (e.key === "Escape" && modal.classList.contains("active")) {
@@ -418,22 +420,40 @@ function initCheckoutModal() {
             submitBtn.textContent = "Processing...";
             submitBtn.disabled = true;
 
+            var subtotal = cart.reduce(function (sum, item) { return sum + (item.price * item.quantity); }, 0);
+            var deliveryFee = 5.00; // Fixed delivery fee for now
+            var tax = subtotal * 0.10;
+            var total = subtotal + tax + deliveryFee;
+
             var orderData = {
                 items: cart.map(function (item) {
-                    return { id: item.id, name: item.name, price: item.price, quantity: item.quantity };
+                    return { 
+                        id: item.id, 
+                        name: item.name, 
+                        price: item.price, 
+                        quantity: item.quantity,
+                        subtotal: item.price * item.quantity
+                    };
                 }),
                 customer: {
                     firstName: document.getElementById("checkoutFirstName").value,
                     lastName: document.getElementById("checkoutLastName").value,
                     email: document.getElementById("checkoutEmail").value,
                     phone: document.getElementById("checkoutPhone").value,
-                    address: document.getElementById("checkoutAddress").value,
-                    city: document.getElementById("checkoutCity").value,
-                    zipCode: document.getElementById("checkoutZip").value
+                    address: (document.getElementById("checkoutAddress").value || "") + ", " + 
+                             (document.getElementById("checkoutCity").value || "") + " " + 
+                             (document.getElementById("checkoutZip").value || "")
                 },
-                deliveryMethod: document.getElementById("deliveryMethod").value || "pickup",
-                paymentMethod: document.getElementById("paymentMethod").value || "card",
-                notes: document.getElementById("orderNotes").value || ""
+                totals: {
+                    subtotal: subtotal,
+                    deliveryFee: deliveryFee,
+                    tax: tax,
+                    total: total
+                },
+                orderType: "delivery", // Default for now
+                paymentMethod: "card", // Default for now
+                specialInstructions: document.getElementById("orderNotes").value || "",
+                time: "asap"
             };
 
             var result = await submitOrder(orderData);
@@ -485,8 +505,7 @@ function updateOrderSummary() {
 
 // ========== SUCCESS MODAL ==========
 function initSuccessModal() {
-    var closeBtn = document.querySelector(".success-modal .modal-close");
-    var overlay = document.querySelector(".success-modal .modal-overlay");
+    var closeBtn = document.getElementById("closeSuccessModal");
     var modal = document.getElementById("successModal");
 
     if (!modal) return;
@@ -494,14 +513,11 @@ function initSuccessModal() {
     function closeSuccessModal() {
         modal.classList.remove("active");
         document.body.style.overflow = "";
+        window.location.href = "/"; // Redirect to home
     }
 
     if (closeBtn) {
         closeBtn.addEventListener("click", closeSuccessModal);
-    }
-
-    if (overlay) {
-        overlay.addEventListener("click", closeSuccessModal);
     }
 
     document.addEventListener("keydown", function (e) {
@@ -518,8 +534,8 @@ function showSuccessModal(order) {
     var orderId = document.querySelector(".success-order-id");
     var orderTotal = document.querySelector(".success-order-total");
 
-    if (orderId) orderId.textContent = order.orderId || "ORD-" + Date.now().toString().slice(-8);
-    if (orderTotal) orderTotal.textContent = "$" + (order.total || 0).toFixed(2);
+    if (orderId) orderId.textContent = order.orderNumber || "ORD-" + Date.now().toString().slice(-8);
+    if (orderTotal) orderTotal.textContent = "$" + (order.totals ? order.totals.total : 0).toFixed(2);
 
     modal.classList.add("active");
     document.body.style.overflow = "hidden";
