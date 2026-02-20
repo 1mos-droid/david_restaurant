@@ -1,79 +1,35 @@
 // ========== ÉCLAT BISTRO BACKEND ==========
-// Node.js/Express Server
+// Node.js/Express Server - Vercel Compatible
 
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+// ========== VERCEL COMPATIBLE STORAGE ==========
+// Use in-memory storage (Vercel has ephemeral filesystem)
+let orders = [];
+let reservations = [];
+let contacts = [];
 
 // ========== MIDDLEWARE ==========
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files - Updated for Vercel compatibility
-app.use(express.static(process.cwd()));
-app.use('/styles', express.static(path.join(process.cwd(), 'styles')));
-app.use('/javascript', express.static(path.join(process.cwd(), 'javascript')));
-app.use('/images', express.static(path.join(process.cwd(), 'images')));
-app.use('/payment-images', express.static(path.join(process.cwd(), 'payment-images')));
-app.use('/videos', express.static(path.join(process.cwd(), 'videos')));
+// ========== STATIC FILES ==========
+app.use(express.static(path.join(__dirname, '.')));
 
-// Protect data directory
-app.use('/data', (req, res) => res.status(403).send('Forbidden'));
+// ========== API ROUTES ==========
 
-// ========== DATA STORAGE (Vercel Fix) ==========
-// Use Vercel's /tmp directory if in production, otherwise use local ./data
-const isVercel = process.env.VERCEL === '1';
-const DATA_DIR = isVercel ? '/tmp/data' : path.join(process.cwd(), 'data');
-
-if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-const ordersFile = path.join(DATA_DIR, 'orders.json');
-const reservationsFile = path.join(DATA_DIR, 'reservations.json');
-const contactsFile = path.join(DATA_DIR, 'contacts.json');
-
-// Initialize data files
-const initializeDataFile = (filePath, defaultData) => {
-    try {
-        if (!fs.existsSync(filePath)) {
-            fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
-        }
-    } catch (error) {
-        console.log(`Could not initialize ${filePath} - running in strict serverless mode.`);
-    }
-};
-
-initializeDataFile(ordersFile, []);
-initializeDataFile(reservationsFile, []);
-initializeDataFile(contactsFile, []);
-
-// ========== HELPER FUNCTIONS ==========
-const readData = (filePath) => {
-    try {
-        if (fs.existsSync(filePath)) {
-            const data = fs.readFileSync(filePath, 'utf8');
-            return JSON.parse(data);
-        }
-        return [];
-    } catch (error) {
-        console.log(`Error reading ${filePath}, returning empty array.`);
-        return [];
-    }
-};
-
-const writeData = (filePath, data) => {
-    try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-    } catch (error) {
-        console.log(`Failed to write to ${filePath} - Vercel read-only system active.`);
-    }
+// Simple UUID generator
+const uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 };
 
 const generateOrderNumber = () => {
@@ -84,19 +40,15 @@ const generateReservationId = () => {
     return 'RES-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
 };
 
-// ========== API ROUTES ==========
-
 // ---- ORDERS API ----
 
 // Get all orders (admin)
 app.get('/api/orders', (req, res) => {
-    const orders = readData(ordersFile);
     res.json(orders);
 });
 
 // Get single order
 app.get('/api/orders/:id', (req, res) => {
-    const orders = readData(ordersFile);
     const order = orders.find(o => o.id === req.params.id);
     if (order) {
         res.json(order);
@@ -118,8 +70,6 @@ app.post('/api/orders', (req, res) => {
         if (!items || items.length === 0) {
             return res.status(400).json({ error: 'Order must contain at least one item' });
         }
-
-        const orders = readData(ordersFile);
         
         const newOrder = {
             id: uuidv4(),
@@ -154,8 +104,8 @@ app.post('/api/orders', (req, res) => {
         };
 
         orders.push(newOrder);
-        writeData(ordersFile, orders);
 
+        // Log order (in production, send email notifications here)
         console.log('New order received:', newOrder.orderNumber);
 
         res.status(201).json({
@@ -179,7 +129,6 @@ app.patch('/api/orders/:id/status', (req, res) => {
             return res.status(400).json({ error: 'Invalid status' });
         }
 
-        const orders = readData(ordersFile);
         const orderIndex = orders.findIndex(o => o.id === req.params.id);
         
         if (orderIndex === -1) {
@@ -188,8 +137,6 @@ app.patch('/api/orders/:id/status', (req, res) => {
 
         orders[orderIndex].status = status;
         orders[orderIndex].updatedAt = new Date().toISOString();
-        
-        writeData(ordersFile, orders);
 
         res.json({
             success: true,
@@ -205,7 +152,6 @@ app.patch('/api/orders/:id/status', (req, res) => {
 // Delete order
 app.delete('/api/orders/:id', (req, res) => {
     try {
-        const orders = readData(ordersFile);
         const orderIndex = orders.findIndex(o => o.id === req.params.id);
         
         if (orderIndex === -1) {
@@ -213,7 +159,6 @@ app.delete('/api/orders/:id', (req, res) => {
         }
 
         const deletedOrder = orders.splice(orderIndex, 1)[0];
-        writeData(ordersFile, orders);
 
         res.json({
             success: true,
@@ -230,13 +175,11 @@ app.delete('/api/orders/:id', (req, res) => {
 
 // Get all reservations
 app.get('/api/reservations', (req, res) => {
-    const reservations = readData(reservationsFile);
     res.json(reservations);
 });
 
 // Get single reservation
 app.get('/api/reservations/:id', (req, res) => {
-    const reservations = readData(reservationsFile);
     const reservation = reservations.find(r => r.id === req.params.id);
     if (reservation) {
         res.json(reservation);
@@ -250,6 +193,7 @@ app.post('/api/reservations', (req, res) => {
     try {
         const { adults, children, date, time, area, comment, contact } = req.body;
 
+        // Validation
         if (!adults || !date || !time) {
             return res.status(400).json({ error: 'Missing required reservation information' });
         }
@@ -257,8 +201,6 @@ app.post('/api/reservations', (req, res) => {
         if (!contact || !contact.firstName || !contact.lastName || !contact.email || !contact.phone) {
             return res.status(400).json({ error: 'Missing contact information' });
         }
-
-        const reservations = readData(reservationsFile);
 
         const newReservation = {
             id: uuidv4(),
@@ -283,8 +225,8 @@ app.post('/api/reservations', (req, res) => {
         };
 
         reservations.push(newReservation);
-        writeData(reservationsFile, reservations);
 
+        // Log reservation
         console.log('New reservation received:', newReservation.reservationId);
 
         res.status(201).json({
@@ -308,7 +250,6 @@ app.patch('/api/reservations/:id/status', (req, res) => {
             return res.status(400).json({ error: 'Invalid status' });
         }
 
-        const reservations = readData(reservationsFile);
         const reservationIndex = reservations.findIndex(r => r.id === req.params.id);
         
         if (reservationIndex === -1) {
@@ -317,8 +258,6 @@ app.patch('/api/reservations/:id/status', (req, res) => {
 
         reservations[reservationIndex].status = status;
         reservations[reservationIndex].updatedAt = new Date().toISOString();
-        
-        writeData(reservationsFile, reservations);
 
         res.json({
             success: true,
@@ -334,7 +273,6 @@ app.patch('/api/reservations/:id/status', (req, res) => {
 // Delete reservation
 app.delete('/api/reservations/:id', (req, res) => {
     try {
-        const reservations = readData(reservationsFile);
         const reservationIndex = reservations.findIndex(r => r.id === req.params.id);
         
         if (reservationIndex === -1) {
@@ -342,7 +280,6 @@ app.delete('/api/reservations/:id', (req, res) => {
         }
 
         const deletedReservation = reservations.splice(reservationIndex, 1)[0];
-        writeData(reservationsFile, reservations);
 
         res.json({
             success: true,
@@ -359,7 +296,6 @@ app.delete('/api/reservations/:id', (req, res) => {
 
 // Get all contact messages
 app.get('/api/contacts', (req, res) => {
-    const contacts = readData(contactsFile);
     res.json(contacts);
 });
 
@@ -368,16 +304,16 @@ app.post('/api/contacts', (req, res) => {
     try {
         const { firstName, lastName, email, phone, message } = req.body;
 
+        // Validation
         if (!firstName || !lastName || !email || !message) {
             return res.status(400).json({ error: 'Missing required information' });
         }
 
+        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({ error: 'Invalid email address' });
         }
-
-        const contacts = readData(contactsFile);
 
         const newContact = {
             id: uuidv4(),
@@ -390,7 +326,6 @@ app.post('/api/contacts', (req, res) => {
         };
 
         contacts.push(newContact);
-        writeData(contactsFile, contacts);
 
         console.log('New contact message received:', newContact.id);
 
@@ -582,22 +517,18 @@ app.get('/api/menu', (req, res) => {
 
 // Get dashboard statistics
 app.get('/api/stats', (req, res) => {
-    const orders = readData(ordersFile);
-    const reservations = readData(reservationsFile);
-    const contacts = readData(contactsFile);
-
     const today = new Date().toISOString().split('T')[0];
 
     const stats = {
         orders: {
             total: orders.length,
-            today: orders.filter(o => o.createdAt.startsWith(today)).length,
+            today: orders.filter(o => o.createdAt && o.createdAt.startsWith(today)).length,
             pending: orders.filter(o => o.status === 'pending').length,
             totalRevenue: orders.reduce((sum, o) => sum + (o.totals?.total || 0), 0)
         },
         reservations: {
             total: reservations.length,
-            today: reservations.filter(r => r.details.date === today).length,
+            today: reservations.filter(r => r.details && r.details.date === today).length,
             pending: reservations.filter(r => r.status === 'pending').length
         },
         messages: {
@@ -616,6 +547,7 @@ app.get('/api/customer/dashboard', (req, res) => {
     const { email } = req.query;
     
     if (!email) {
+        // Return demo data for non-logged in users
         return res.json({
             user: {
                 firstName: 'Guest',
@@ -637,32 +569,35 @@ app.get('/api/customer/dashboard', (req, res) => {
         });
     }
     
-    const orders = readData(ordersFile);
-    const reservations = readData(reservationsFile);
-    
     const customerOrders = orders.filter(o => 
         o.customer && o.customer.email && o.customer.email.toLowerCase() === email.toLowerCase()
     );
     
+    // Filter reservations by customer email
     const customerReservations = reservations.filter(r => 
         r.contact && r.contact.email && r.contact.email.toLowerCase() === email.toLowerCase()
     );
     
+    // Calculate stats
     const totalOrders = customerOrders.length;
     const totalSpent = customerOrders.reduce((sum, o) => sum + (o.totals?.total || 0), 0);
     
+    // Get upcoming reservations (future dates)
     const today = new Date().toISOString().split('T')[0];
     const upcomingReservations = customerReservations
-        .filter(r => r.details.date >= today && r.status !== 'cancelled')
+        .filter(r => r.details && r.details.date >= today && r.status !== 'cancelled')
         .sort((a, b) => new Date(a.details.date) - new Date(b.details.date));
     
+    // Calculate loyalty points (10 points per dollar spent)
     const loyaltyPoints = Math.floor(totalSpent * 10);
     
+    // Determine tier based on points
     let membershipTier = 'Bronze';
     if (loyaltyPoints >= 5000) membershipTier = 'Platinum';
     else if (loyaltyPoints >= 2500) membershipTier = 'Gold';
     else if (loyaltyPoints >= 1000) membershipTier = 'Silver';
     
+    // Generate avatar initials
     const firstInitial = customerOrders[0]?.customer?.firstName?.charAt(0) || 'G';
     const lastInitial = customerOrders[0]?.customer?.lastName?.charAt(0) || 'U';
     
@@ -697,7 +632,6 @@ app.get('/api/customer/orders', (req, res) => {
         return res.status(400).json({ error: 'Email parameter required' });
     }
     
-    const orders = readData(ordersFile);
     const customerOrders = orders.filter(o => 
         o.customer && o.customer.email && o.customer.email.toLowerCase() === email.toLowerCase()
     ).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -713,10 +647,9 @@ app.get('/api/customer/reservations', (req, res) => {
         return res.status(400).json({ error: 'Email parameter required' });
     }
     
-    const reservations = readData(reservationsFile);
     const customerReservations = reservations.filter(r => 
         r.contact && r.contact.email && r.contact.email.toLowerCase() === email.toLowerCase()
-    ).sort((a, b) => new Date(a.details.date) - new Date(b.details.date));
+    ).sort((a, b) => new Date(a.details?.date || 0) - new Date(b.details?.date || 0));
     
     res.json(customerReservations);
 });
@@ -752,24 +685,36 @@ const pages = [
 
 pages.forEach(page => {
     app.get(page.route, (req, res) => {
-        res.sendFile(path.join(process.cwd(), page.file));
+        res.sendFile(path.join(__dirname, page.file));
     });
     // Also support .html extension explicitly
     if (page.route !== '/') {
         app.get(`${page.route}.html`, (req, res) => {
-            res.sendFile(path.join(process.cwd(), page.file));
+            res.sendFile(path.join(__dirname, page.file));
         });
     }
+});
+
+// ========== SERVE FRONTEND (CATCH-ALL) ==========
+app.get('*', (req, res) => {
+    const filePath = req.path;
+    
+    // Check if it's an API route that didn't match anything
+    if (filePath.startsWith('/api/')) {
+        return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    
+    // For all other routes, serve index.html
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ========== EXPORT APP FOR VERCEL ==========
 module.exports = app;
 
 // ========== START SERVER ==========
-// Only start listening if not running as a Vercel function
+const PORT = process.env.PORT || 3000;
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Éclat Bistro Server running on http://localhost:${PORT}`);
-        console.log(`Customer Dashboard: http://localhost:${PORT}/dashboard.html`);
     });
 }
