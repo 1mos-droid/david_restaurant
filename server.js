@@ -793,3 +793,4 @@ if (require.main === module) {
         console.log(`Customer Dashboard: http://localhost:${PORT}/dashboard.html`);
     });
 }
+module.exports = app;
