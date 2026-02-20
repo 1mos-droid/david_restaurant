@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, ChevronRight } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { fetchMenuItems } from '../api/menu';
 import type { MenuItem } from '../types/index';

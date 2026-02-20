@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 import { 
     LayoutDashboard, 
     Utensils, 
@@ -12,7 +13,6 @@ import {
     XCircle,
     ArrowUpRight,
     Search,
-    Filter,
     X,
     Save
 } from 'lucide-react';
@@ -24,7 +24,7 @@ const Admin: React.FC = () => {
     const [stats, setStats] = useState<any>(null);
     const [menu, setMenu] = useState<MenuItem[]>([]);
     const [orders, setOrders] = useState<Order[]>([]);
-    const [reservations, setReservations] = useState<any[]>([]);
+    const [reservations, setReservations] = useState<Reservation[]>([]);
     const [loading, setLoading] = useState(true);
     
     // Modal State

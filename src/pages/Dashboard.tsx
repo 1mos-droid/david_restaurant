@@ -5,13 +5,10 @@ import {
     Calendar, 
     Star, 
     Clock, 
-    ChevronRight,
     LogOut,
     Zap,
     Utensils,
-    ChefHat,
-    MapPin,
-    AlertCircle
+    ChefHat
 } from 'lucide-react';
 import { fetchDashboardData } from '../api/dashboard';
 import type { CustomerDashboardData } from '../types/index';

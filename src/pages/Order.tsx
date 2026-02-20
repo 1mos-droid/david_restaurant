@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Plus, Minus, ShoppingBag, CreditCard, ChevronRight, CheckCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Trash2, Plus, Minus, ShoppingBag, ChevronRight, CheckCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import './Order.css';
 

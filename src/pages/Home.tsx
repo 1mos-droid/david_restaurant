@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Clock, Star, GlassWater, UtensilsCrossed, Briefcase } from 'lucide-react';
+import { Clock, GlassWater, UtensilsCrossed, Briefcase } from 'lucide-react';
 import Gallery from '../components/Gallery';
 import Reservation from '../components/Reservation';
 import './Home.css';
