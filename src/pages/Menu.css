@@ -1,0 +1,145 @@
+.menu-page {
+    padding-top: var(--header-height);
+    padding-bottom: 8rem;
+}
+
+.menu-header {
+    background-color: var(--color-surface-alt);
+    padding: 100px 0;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.menu-nav {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 6rem;
+    flex-wrap: wrap;
+}
+
+.menu-nav-btn {
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-text-light);
+    cursor: pointer;
+    position: relative;
+    padding-bottom: 0.5rem;
+    transition: var(--transition-fast);
+}
+
+.menu-nav-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-accent);
+    transition: var(--transition-fast);
+}
+
+.menu-nav-btn.active {
+    color: var(--color-primary);
+}
+
+.menu-nav-btn.active::after {
+    width: 100%;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 3rem;
+}
+
+.menu-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    transition: var(--transition);
+}
+
+.menu-card:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
+}
+
+.menu-card-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+}
+
+.menu-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.menu-card:hover .menu-card-image img {
+    transform: scale(1.05);
+}
+
+.menu-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: var(--color-accent);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 1rem;
+}
+
+.menu-card-content {
+    padding: 2rem;
+}
+
+.menu-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.menu-card-header h3 {
+    font-size: 1.25rem;
+    letter-spacing: 0;
+}
+
+.menu-price {
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: var(--color-accent);
+}
+
+.menu-description {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+    min-height: 3rem;
+}
+
+.add-to-cart {
+    width: 100%;
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+@media (max-width: 768px) {
+    .menu-nav {
+        gap: 1.5rem;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+}

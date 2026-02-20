@@ -1,83 +1,73 @@
-# Éclat Bistro - Modern Fine Dining Experience
+# React + TypeScript + Vite
 
-Éclat Bistro is a sophisticated, full-stack restaurant website designed for a premium dining experience. It features a dynamic menu, real-time online ordering, a reservation system, and a comprehensive administrative dashboard for restaurant management.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🍽️ Key Features
+Currently, two official plugins are available:
 
-### For Customers
-- **Elegant Homepage**: A visually stunning introduction to the bistro's story and culinary philosophy.
-- **Dynamic Menu**: Browsable menu categories (Starters, Mains, Desserts, Drinks) synced directly from the backend.
-- **Online Ordering**: A seamless shopping cart experience with tax calculation and checkout.
-- **Table Reservations**: Real-time booking system with guest count, area preference, and special requests.
-- **Personal Dashboard**: Customers can track their order history, upcoming reservations, and loyalty points.
-- **Responsive Design**: Fully optimized for mobile, tablet, and desktop viewing.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### For Administrators
-- **Executive Dashboard**: Real-time overview of daily revenue, total orders, and active reservations.
-- **Order Management**: Track and update order statuses from "Pending" to "Delivered".
-- **Reservation Tracking**: Manage table assignments and guest lists.
-- **Live Activity Feed**: Instant notifications for new orders, messages, and bookings.
+## React Compiler
 
-## 🛠️ Tech Stack
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-- **Frontend**: HTML5, Vanilla CSS3 (Custom Variables), JavaScript (ES6+), Font Awesome, Google Fonts.
-- **Backend**: Node.js, Express.js.
-- **Data Storage**: JSON-based persistent storage (File System).
-- **Communication**: RESTful API.
+## Expanding the ESLint configuration
 
-## 🚀 Getting Started
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v14 or higher recommended)
-- npm (comes with Node.js)
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-### Installation
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-1. **Clone or download the project files.**
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start the server:**
-   ```bash
-   npm start
-   ```
-   *For development with auto-reload:*
-   ```bash
-   npm run dev
-   ```
-
-4. **Access the application:**
-   - **Main Website**: [http://localhost:3000](http://localhost:3000)
-   - **Admin Dashboard**: [http://localhost:3000/admin](http://localhost:3000/admin)
-
-## 📁 Project Structure
-
-```text
-├── server.js           # Express server & REST API
-├── admin.html          # Administrative dashboard
-├── index.html          # Main homepage
-├── menu.html           # Full menu view
-├── order.html          # Online ordering system
-├── dashboard.html      # Customer account page
-├── data/               # JSON data storage (Orders, Reservations, Contacts)
-├── javascript/         # Frontend logic and API integration
-├── styles/             # Modular CSS stylesheets
-└── images/             # Optimized culinary assets
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-## 🔌 API Endpoints
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-- `GET /api/menu`: Retrieve all menu items.
-- `POST /api/orders`: Place a new order.
-- `GET /api/orders`: Admin access to all orders.
-- `POST /api/reservations`: Submit a booking request.
-- `GET /api/stats`: Retrieve dashboard analytics.
-- `GET /api/customer/dashboard`: Get personalized data for a specific customer.
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-## 📝 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-*Designed & Developed by David Peprah*
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```

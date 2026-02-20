@@ -1,0 +1,171 @@
+/* ==================== CSS VARIABLES ==================== */
+:root {
+    /* Colors - "Champagne & Stone" Palette */
+    --color-bg: #FDFCFB;             /* Pearl White */
+    --color-surface: #FFFFFF;
+    --color-surface-alt: #F7F5F2;    /* Stone Wash */
+    --color-primary: #1A1A1A;        /* Rich Charcoal */
+    --color-primary-light: #4D4D4D;
+    --color-accent: #C5A059;         /* Muted Champagne/Brass */
+    --color-accent-hover: #A6823D;
+    --color-text: #2C2C2C;
+    --color-text-muted: #666666;
+    --color-text-light: #999999;
+    --color-success: #2D5A27;
+    --color-error: #8B0000;
+    --color-border: #E5E1DA;         /* Very subtle stone border */
+    
+    /* Typography */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+    
+    /* Spacing */
+    --container-width: 1440px;       /* Wider container for editorial feel */
+    --header-height: 80px;
+    --radius-sm: 2px;                /* Sharper corners for luxury feel */
+    --radius-md: 4px;
+    --radius-lg: 0px;                /* No radius on large blocks for high-end look */
+    --radius-full: 9999px;
+    
+    /* Shadows - More subtle, "expensive" shadows */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
+    --shadow-md: 0 10px 30px -10px rgba(0,0,0,0.05);
+    --shadow-lg: 0 30px 60px -15px rgba(0,0,0,0.08);
+    --shadow-float: 0 50px 100px -20px rgba(0,0,0,0.12);
+    
+    /* Transitions */
+    --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Slower, high-inertia transition */
+    --transition-fast: 0.2s ease;
+}
+
+/* ==================== RESET & BASE ==================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    line-height: 1.1;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(3rem, 8vw, 6rem); }
+h2 { font-size: clamp(2.5rem, 6vw, 4.5rem); }
+h3 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+h4 { font-size: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+
+p { margin-bottom: 1.5rem; color: var(--color-text-muted); }
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: var(--transition);
+}
+
+ul { list-style: none; }
+
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem 2.5rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-accent);
+}
+
+.btn-primary:disabled {
+    background-color: var(--color-text-light);
+    cursor: not-allowed;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.section-label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    margin-bottom: 2rem;
+}
+
+.section-description {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.1rem;
+}

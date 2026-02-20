@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éclat Bistro | Modern Fine Dining Experience</title>
+    <meta name="description" content="Experience modern fine dining at Éclat Bistro. Seasonal ingredients, innovative cuisine, and exceptional service in an elegant setting.">
+    <meta name="keywords" content="fine dining, restaurant, modern cuisine, seasonal ingredients, chef's table, wine pairing">
+    <meta name="author" content="Éclat Bistro">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Éclat Bistro | Modern Fine Dining Experience">
+    <meta property="og:description" content="Experience modern fine dining at Éclat Bistro. Seasonal ingredients, innovative cuisine, and exceptional service.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animation.css">
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-ring"></div>
+            <p class="loader-text">Éclat Bistro</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="/" class="logo" aria-label="Éclat Bistro Home">
+                <span class="logo-icon">E</span>
+                <span class="logo-text">Éclat Bistro</span>
+            </a>
+            
+            <div class="nav-menu" id="navMenu">
+                <a href="/" class="nav-link active">Home</a>
+                <a href="/menu" class="nav-link">Menu</a>
+                <a href="#reservation" class="nav-link">Reservations</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="/order" class="btn btn-primary btn-sm">
+                    Order Online
+                </a>
+            </div>
+            
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle mobile menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-container">
+            <div class="hero-text reveal">
+                <span class="hero-welcome">Est. 2010</span>
+                <h1>Crafting <br />Culinary <br /><span class="highlight">Artistry</span></h1>
+                <p>An immersive dining experience where modern innovation <br />meets timeless French tradition.</p>
+                <div class="hero-buttons">
+                    <a href="#reservation" class="btn btn-primary">Book a Table</a>
+                    <a href="/menu" class="btn btn-outline">Explore Menu</a>
+                </div>
+                <div class="hero-hours">
+                    <i class="far fa-clock"></i> Mon – Sun: 11:00am – 11:00pm
+                </div>
+            </div>
+            
+            <div class="hero-image reveal">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Exquisite Dining Experience">
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content reveal">
+                    <span class="section-label">Philosophie</span>
+                    <h2 class="section-title">Where Tradition <br />Meets Innovation</h2>
+                    <p class="about-description">
+                        "Each dish tells a story—of the land, the sea, and the passionate hands that bring it to your table."
+                    </p>
+                    <p>
+                        Founded in 2010 by Chef Alexandre Moreau, Éclat Bistro represents a harmonious blend of classic
+                        French techniques and modern culinary innovation. We believe that exceptional dining is not just about food, but about creating memorable experiences that linger long after the last bite.
+                    </p>
+                    
+                    <div class="about-stats">
+                        <div class="stat">
+                            <div class="stat-number">14</div>
+                            <div class="stat-label">Years of Excellence</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Michelin Stars</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-images reveal">
+                    <div class="image-main">
+                        <img src="https://images.unsplash.com/photo-1550966842-30c2768d58ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Exquisite Kitchen" loading="lazy">
+                    </div>
+                    <div class="image-secondary">
+                        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fine Details" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Menu Preview Section -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">La Carte</span>
+                <h2 class="section-title">Seasonal Highlights</h2>
+                <p class="section-description">
+                    Our menu changes with the seasons to showcase ingredients at their peak. Each dish is crafted with precision and passion.
+                </p>
+            </div>
+            
+            <div class="menu-categories reveal">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="starters">Starters</button>
+                <button class="category-btn" data-category="mains">Main Courses</button>
+                <button class="category-btn" data-category="desserts">Desserts</button>
+            </div>
+            
+            <div class="menu-grid reveal">
+                <!-- Menu items - redesigned to horizontal list -->
+                <div class="menu-item" data-category="starters">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1546039907-7fa05f864c02?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tuna Tartare" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3>Yellowfin Tuna Tartare</h3>
+                            <span class="menu-price">$24</span>
+                        </div>
+                        <p class="menu-description">Avocado, cucumber, yuzu kosho, crispy shallots.</p>
+                        <div class="menu-tags">
+                            <span class="tag">GF</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item" data-category="mains">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1558034889-f7e434c91743?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Wagyu Beef" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3>Australian Wagyu</h3>
+                            <span class="menu-price">$68</span>
+                        </div>
+                        <p class="menu-description">8oz grass-fed wagyu, truffle mashed potatoes.</p>
+                        <div class="menu-tags">
+                            <span class="tag">Signature</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item" data-category="mains">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Atlantic Halibut" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3>Atlantic Halibut</h3>
+                            <span class="menu-price">$42</span>
+                        </div>
+                        <p class="menu-description">Pan-seared halibut, saffron fennel puree.</p>
+                        <div class="menu-tags">
+                            <span class="tag">Seasonal</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="menu-item" data-category="desserts">
+                    <div class="menu-item-image">
+                        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Soufflé" loading="lazy">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-header">
+                            <h3>Grand Marnier Soufflé</h3>
+                            <span class="menu-price">$18</span>
+                        </div>
+                        <p class="menu-description">Light chocolate soufflé with Grand Marnier.</p>
+                        <div class="menu-tags">
+                            <span class="tag">Order Ahead</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Section -->
+    <div class="gallery-container" id="gallery">
+        <div class="container text-center reveal">
+            <span class="section-label">Atmosphere</span>
+            <h1 class="restaurant-name">L'ambiance</h1>
+            <div class="gallery-subtitle">A Visual Journey</div>
+        </div>
+        
+        <div class="image-grid reveal" style="margin-top: 6rem;">
+            <div class="grid-item item-a">
+                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Signature Cocktails">
+                <div class="image-label">Mixology</div>
+            </div>
+            
+            <div class="grid-item item-b">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dining Room">
+                <div class="image-label">Main Hall</div>
+            </div>
+            
+            <div class="grid-item item-c">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Table Setting">
+                <div class="image-label">Details</div>
+            </div>
+            
+            <div class="grid-item item-d">
+                <img src="https://images.unsplash.com/photo-1574937302251-58286950005a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Wine Selection">
+                <div class="image-label">Cellar</div>
+            </div>
+            
+            <div class="grid-item item-e">
+                <img src="https://images.unsplash.com/photo-1550966842-30c2768d58ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kitchen Art">
+                <div class="image-label">Craft</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Services Section -->
+    <section class="services-intro reveal" id="services">
+        <div class="container text-center">
+            <span class="section-label">Privé</span>
+            <h2 class="section-title">Exclusive Services</h2>
+            <p class="section-description">Bespoke culinary experiences tailored for the most discerning guests.</p>
+        </div>
+    </section>
+    
+    <div class="container reveal">
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-glass-cheers"></i></div>
+                <h3>Private Events</h3>
+                <p>From intimate celebrations to grand galas, our dedicated events team ensures every detail is perfect.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-concierge-bell"></i></div>
+                <h3>Sommelier Selection</h3>
+                <p>Guided tastings and private cellar access for true wine connoisseurs.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon"><i class="fas fa-briefcase"></i></div>
+                <h3>Corporate Dining</h3>
+                <p>Sophisticated environments for business discussions over world-class cuisine.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reservation Section -->
+    <section class="reservation-section" id="reservation">
+        <div class="reservation-image reveal">
+            <img src="https://images.unsplash.com/photo-1551632432-c735e8299bc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Reservation" style="height: 100%; width: 100%; object-fit: cover;">
+        </div>
+        
+        <div class="reservation-form reveal">
+            <span class="section-label">Concierge</span>
+            <h1>Reserve a Table</h1>
+            
+            <form id="reservationForm">
+                <div class="form-row">
+                    <input type="text" id="firstName" placeholder="FIRST NAME *" required>
+                    <input type="text" id="lastName" placeholder="LAST NAME *" required>
+                </div>
+                
+                <div class="form-row">
+                    <input type="email" id="email" placeholder="EMAIL ADDRESS *" required>
+                    <input type="tel" id="phone" placeholder="PHONE NUMBER *" required>
+                </div>
+
+                <div class="form-row">
+                    <input type="number" id="guests" placeholder="GUESTS" min="1" max="20" value="2" required>
+                    <input type="date" id="date" required>
+                </div>
+                
+                <input type="time" id="time" required>
+                <textarea placeholder="SPECIAL REQUESTS OR DIETARY REQUIREMENTS" id="occasion"></textarea>
+                
+                <button type="submit" class="btn btn-primary button-form">Secure Reservation</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="testimonial-content reveal">
+                <span class="section-label">Reviews</span>
+                <h3>"An Unforgettable Experience. The service was impeccable, and the tasting menu was a journey through flavors I never knew existed."</h3>
+                <div class="testimonial-author">
+                    <strong>Michael Foster</strong>
+                    <span>Food Critic, Epicure Magazine</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <div class="contact-section-header reveal">
+        <span class="section-label">Contact</span>
+        <h1>Get in Touch</h1>
+    </div>
+    
+    <section class="contact-section reveal" id="contact">
+        <div class="contact-form">
+            <h1>Send Message</h1>
+            <form id="contactForm">
+                <div class="form-grid">
+                    <input type="text" placeholder="FIRST NAME *" id="contactFirstName" required>
+                    <input type="text" placeholder="LAST NAME *" id="contactLastName" required>
+                    <input type="tel" placeholder="TELEPHONE" id="contactPhone">
+                    <input type="email" placeholder="YOUR EMAIL *" id="contactEmail" required>
+                    <textarea placeholder="YOUR QUERY *" id="contactMessage" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="contact-info">
+            <h2>Visit Us</h2>
+            <div class="info-item"><i class="fas fa-map-marker-alt"></i> Richmond Hill, Ontario CA</div>
+            <div class="info-item"><i class="fas fa-envelope"></i> info@eclatbistro.com</div>
+            <div class="info-item"><i class="fas fa-phone"></i> (888) 123-4567</div>
+            
+            <div style="margin-top: 4rem;">
+                <h3>Opening Hours</h3>
+                <p>Mon – Fri : 11:00am – 11:00pm</p>
+                <p>Sat – Sun : 10:00am – 11:00pm</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h2 class="logo-text" style="color: white; margin-bottom: 2rem;">Éclat Bistro</h2>
+                    <p>Experience the perfect blend of tradition and modern innovation in every dish we serve.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Explore</h3>
+                    <ul style="color: var(--color-border);">
+                        <li><a href="/menu">Menu</a></li>
+                        <li><a href="#reservation">Reservations</a></li>
+                        <li><a href="#about">Our Story</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe for exclusive seasonal updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required style="margin-bottom: 1rem;">
+                        <button type="submit" class="btn btn-outline" style="width: 100%; color: white; border-color: white;">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> Éclat Bistro. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="javascript/main.js"></script>
+    <script src="javascript/animation.js"></script>
+</body>
+</html>
